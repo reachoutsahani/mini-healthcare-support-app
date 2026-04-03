@@ -1,0 +1,85 @@
+:root {
+  --primary: #2e7d32;
+  --bg: #f4f6f9;
+  --white: #ffffff;
+  --border: #ddd;
+}
+
+/* GLOBAL */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+}
+
+/* HEADER */
+h1 {
+  background: var(--primary);
+  color: white;
+  padding: 15px;
+  margin: 0;
+  text-align: center;
+}
+
+/* FORM */
+.form-box {
+  background: var(--white);
+  padding: 20px;
+  margin: 20px auto;
+  width: 320px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px;
+  width: 100%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1b5e20;
+}
+
+/* CHAT */
+.chat-box {
+  background: var(--white);
+  width: 350px;
+  margin: 20px auto;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.messages {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.message {
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+}
+
+.message.user {
+  background: #c8e6c9;
+  text-align: right;
+}
+
+.message.ai {
+  background: #e3f2fd;
+  text-align: left;
+}
