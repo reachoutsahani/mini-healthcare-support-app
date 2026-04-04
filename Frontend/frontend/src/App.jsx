@@ -4,14 +4,25 @@ import "./App.css";
 
 function App() {
   return (
-    <div>
+    <div className="container">
+      
+      {/* 🔥 Header */}
       <h1>🏥 Mini Healthcare Support App</h1>
 
-      {/* ✅ Form Section */}
-      <Form />
+      {/* 🔥 Layout Wrapper */}
+      <div className="main-layout">
+        
+        {/* ✅ Form Section */}
+        <div className="section">
+          <Form />
+        </div>
 
-      {/* ✅ AI Chat Section */}
-      <Chat />
+        {/* ✅ Chat Section */}
+        <div className="section">
+          <Chat />
+        </div>
+
+      </div>
     </div>
   );
 }

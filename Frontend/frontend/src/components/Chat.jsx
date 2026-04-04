@@ -1,32 +1,51 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-
-const socket = io("http://localhost:5000");
 
 function Chat() {
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const socketRef = useRef(null);
+  const messagesEndRef = useRef(null);
+
+  // 🔥 CONNECT SOCKET ONLY ONCE
+  useEffect(() => {
+    socketRef.current = io("http://localhost:5000");
+
+    socketRef.current.on("receiveMessage", (reply) => {
+      setIsTyping(false);
+
+      setChat((prev) => [
+        ...prev,
+        {
+          type: "ai",
+          text:
+            reply ||
+            "Stay hydrated, take rest, and consult a doctor if needed.",
+        },
+      ]);
+    });
+
+    return () => {
+      socketRef.current.disconnect();
+    };
+  }, []);
 
   const sendMessage = () => {
     if (!message.trim()) return;
 
-    socket.emit("sendMessage", message);
-
     setChat((prev) => [...prev, { type: "user", text: message }]);
+    setIsTyping(true);
+
+    socketRef.current.emit("sendMessage", message);
     setMessage("");
   };
 
+  // 🔥 AUTO SCROLL
   useEffect(() => {
-    const handler = (reply) => {
-      setChat((prev) => [...prev, { type: "ai", text: reply }]);
-    };
-
-    socket.on("receiveMessage", handler);
-
-    return () => {
-      socket.off("receiveMessage", handler);
-    };
-  }, []);
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat]);
 
   return (
     <div className="chat-box">
@@ -35,19 +54,26 @@ function Chat() {
       <div className="messages">
         {chat.map((msg, i) => (
           <div key={i} className={`message ${msg.type}`}>
-            <b>{msg.type === "user" ? "You" : "AI"}:</b> {msg.text}
+            {msg.text}
           </div>
         ))}
+
+        {isTyping && (
+          <div className="message ai typing">Typing...</div>
+        )}
+
+        <div ref={messagesEndRef} />
       </div>
 
-      <input
-        value={message}
-        placeholder="Ask your health query..."
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-      />
-
-      <button onClick={sendMessage}>Send</button>
+      <div className="chat-input">
+        <input
+          value={message}
+          placeholder="Ask your health query..."
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+        />
+        <button onClick={sendMessage}>Send</button>
+      </div>
     </div>
   );
 }

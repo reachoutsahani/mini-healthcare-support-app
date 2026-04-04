@@ -1,5 +1,6 @@
 const axios = require("axios");
-console.log("KEY:", process.env.OPENROUTER_API_KEY);
+require("dotenv").config();
+
 exports.chat = async (req, res) => {
   try {
     const { message } = req.body;
@@ -11,38 +12,33 @@ exports.chat = async (req, res) => {
       });
     }
 
-    const response = await axios.post(
-      "https://openrouter.ai/api/v1/chat/completions",
-      {
-        model: "openai/gpt-3.5-turbo",
+    const response = await axios({
+      method: "post",
+      url: "https://openrouter.ai/api/v1/chat/completions",
+      headers: {
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      data: {
+        model: "meta-llama/llama-3-8b-instruct", // 🔥 working free model
         messages: [
-          {
-            role: "system",
-            content: "You are a healthcare assistant. Give short helpful answers.",
-          },
           {
             role: "user",
             content: message,
           },
         ],
       },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    });
 
-    const reply = response.data.choices?.[0]?.message?.content || "No response";
+    const reply = response.data.choices[0].message.content;
 
-    return res.status(200).json({
+    return res.json({
       success: true,
       reply,
     });
 
   } catch (error) {
-    console.error("❌ OPENROUTER ERROR:", error.response?.data || error.message);
+    console.log("🔥 ERROR FULL:", error.response?.data || error.message);
 
     return res.status(500).json({
       success: false,

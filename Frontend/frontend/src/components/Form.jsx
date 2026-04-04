@@ -11,23 +11,19 @@ function Form() {
   const [success, setSuccess] = useState("");
 
   const handleSubmit = async () => {
+    if (!form.name || !form.email || !form.message) {
+      return setSuccess("Please fill all fields!");
+    }
+
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/support/submit",
+        "http://localhost:5000/api/support",
         form
       );
 
-      // reset form
-      setForm({
-        name: "",
-        email: "",
-        message: "",
-      });
-
-      // show success message
-      setSuccess(res.data.message || "Form submitted successfully!");
+      setForm({ name: "", email: "", message: "" });
+      setSuccess(res.data.message || "Submitted successfully!");
     } catch (err) {
-      console.error(err);
       setSuccess("Something went wrong!");
     }
   };
@@ -40,23 +36,23 @@ function Form() {
 
       <input
         value={form.name}
-        placeholder="Name"
+        placeholder="Your Name"
         onChange={(e) => setForm({ ...form, name: e.target.value })}
       />
 
       <input
         value={form.email}
-        placeholder="Email"
+        placeholder="Your Email"
         onChange={(e) => setForm({ ...form, email: e.target.value })}
       />
 
       <textarea
         value={form.message}
-        placeholder="Describe your problem"
+        placeholder="Describe your problem..."
         onChange={(e) => setForm({ ...form, message: e.target.value })}
       />
 
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}>Submit Request</button>
     </div>
   );
 }
