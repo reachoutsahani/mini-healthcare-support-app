@@ -17,7 +17,7 @@ function Form() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/support",
+        "https://mini-healthcare-support-app-4qm9.onrender.com/api/chatbot/message",
         form
       );
 
