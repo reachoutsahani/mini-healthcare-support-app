@@ -19,13 +19,14 @@ function Form() {
     try {
       setLoading(true);
 
+      // ✅ CORRECT BACKEND ROUTE
       const res = await axios.post(
-        "https://mini-healthcare-support-app-4qm9.onrender.com/api/chatbot/message",
+        "https://mini-healthcare-support-app-4qm9.onrender.com/api/support",
         form
       );
 
       setForm({ name: "", email: "", message: "" });
-      setSuccess(res.data.message || "Submitted successfully!");
+      setSuccess(res.data.message || "Form submitted successfully!");
     } catch (err) {
       setSuccess("Something went wrong!");
     } finally {
