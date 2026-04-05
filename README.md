@@ -58,10 +58,15 @@ npm start
 
 ## Live Link
 
-(Add your deployed link here)
+##(Add your deployed link he
+## live frontend link
+https://mini-healthcare-support-app-l5zu.vercel.app
+##live backend link
+https://mini-healthcare-support-app-4qm9.onrender.com
 
 ---
 
 ## GitHub Link
 
 (Add your GitHub link here)
+https://github.com/reachoutsahani/mini-healthcare-support-app
