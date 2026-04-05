@@ -1,6 +1,6 @@
 import Chat from "./components/Chat";
 import Form from "./components/Form";
-import "./App.css";
+import "./app.css";
 
 function App() {
   return (
