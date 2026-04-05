@@ -9,6 +9,7 @@ function Form() {
   });
 
   const [success, setSuccess] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.message) {
@@ -16,6 +17,8 @@ function Form() {
     }
 
     try {
+      setLoading(true);
+
       const res = await axios.post(
         "https://mini-healthcare-support-app-4qm9.onrender.com/api/chatbot/message",
         form
@@ -25,6 +28,8 @@ function Form() {
       setSuccess(res.data.message || "Submitted successfully!");
     } catch (err) {
       setSuccess("Something went wrong!");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,7 +57,9 @@ function Form() {
         onChange={(e) => setForm({ ...form, message: e.target.value })}
       />
 
-      <button onClick={handleSubmit}>Submit Request</button>
+      <button onClick={handleSubmit} disabled={loading}>
+        {loading ? "Submitting..." : "Submit Request"}
+      </button>
     </div>
   );
 }

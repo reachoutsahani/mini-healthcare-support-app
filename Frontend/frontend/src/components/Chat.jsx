@@ -11,7 +11,8 @@ function Chat() {
 
   // 🔥 CONNECT SOCKET ONLY ONCE
   useEffect(() => {
-    socketRef.current = io("http://localhost:5000");
+    // ✅ FIXED BACKEND URL
+    socketRef.current = io("https://mini-healthcare-support-app-4qm9.onrender.com");
 
     socketRef.current.on("receiveMessage", (reply) => {
       setIsTyping(false);
